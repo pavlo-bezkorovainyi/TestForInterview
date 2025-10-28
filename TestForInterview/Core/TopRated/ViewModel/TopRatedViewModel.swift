@@ -5,7 +5,6 @@
 //  Created by Pavlo Bezkorovainyi on 27.10.2025.
 //
 
-
 import Foundation
 import Combine
 
@@ -15,6 +14,8 @@ class TopRatedViewModel: ObservableObject {
   
   @Published var movies: [MovieModel] = []
   @Published var isLoading = false
+  
+  weak var moviesCollectionVC: MoviesCollectionViewControllerProtocol?
   
   
   // MARK: - Private Properties
@@ -35,14 +36,17 @@ class TopRatedViewModel: ObservableObject {
   
   private func addSubscribers() {
     dataService.$topRatedMovies
-      .sink { [weak self] (serviceMovies) in
-        self?.movies = serviceMovies
+      .sink { [weak self] movies in
+        guard let self else { return }
+        self.movies = movies
+        self.moviesCollectionVC?.update(movies: movies)
       }
       .store(in: &cancellables)
     
     dataService.$isLoading
-      .sink { [weak self] (serviceIsLoading) in
-        self?.isLoading = serviceIsLoading
+      .sink { [weak self] isLoading in
+        guard let self else { return }
+        self.isLoading = isLoading
       }
       .store(in: &cancellables)
   }
