@@ -18,7 +18,7 @@ class TopRatedDataService {
   
   //MARK: - Private properties
   
-  private var currentPage = 1
+  private var currentPage = 0
   private var cancellables = Set<AnyCancellable>()
   
   private func createMovieURL(for page: Int) -> URL? {

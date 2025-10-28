@@ -26,4 +26,8 @@ struct MovieModel: Codable {
     case voteAverage = "vote_average"
     case voteCount = "vote_count"
   }
+  
+  var imgURL: URL? {
+    URL(string: "https://image.tmdb.org/t/p/w500/\(posterPath ?? "")")
+  }
 }

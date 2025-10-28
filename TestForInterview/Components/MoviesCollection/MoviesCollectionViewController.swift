@@ -20,7 +20,6 @@ protocol MoviesCollectionViewControllerProtocol: AnyObject {
 
 class MoviesCollectionViewController: UIViewController {
   
-  
   // MARK: - IBOutlets
   
   @IBOutlet weak var collectionView: UICollectionView!
@@ -38,6 +37,14 @@ class MoviesCollectionViewController: UIViewController {
     self.collectionView.dataSource = self
     self.collectionView.delegate = self
     self.collectionView.register(MovieCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+    if let layout = self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+      layout.estimatedItemSize = .zero
+    }
+  }
+  
+  override func viewWillTransition(to size: CGSize, with coordinator: any UIViewControllerTransitionCoordinator) {
+    super.viewWillTransition(to: size, with: coordinator)
+    collectionView.collectionViewLayout.invalidateLayout()
   }
 }
 
@@ -70,9 +77,11 @@ extension MoviesCollectionViewController: UICollectionViewDataSource {
     
     let movie = movies[indexPath.item]
     
-    cell.titleLabel.text = movie.title ?? "No Title"
+    cell.update(imageUrl: movie.imgURL, title: movie.title ?? "No title", rating: movie.popularity)
     
-    cell.backgroundColor = indexPath.item % 2 == 0 ? .lightGray : .red.withAlphaComponent(0.3)
+    //    cell.titleLabel.text = movie.title ?? "No Title"
+    //
+    //    cell.backgroundColor = indexPath.item % 2 == 0 ? .lightGray : .red.withAlphaComponent(0.3)
     
     return cell
   }
@@ -85,9 +94,6 @@ extension MoviesCollectionViewController: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     let movie = movies[indexPath.item]
     delegate?.didSelectMovie(movie)
-    //    let controller = UIHostingController(rootView: EmptyView())
-    //
-    //    navigationController?.pushViewController(controller, animated: true)
   }
   
   func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
@@ -95,4 +101,35 @@ extension MoviesCollectionViewController: UICollectionViewDelegate {
       delegate?.onDisplayLastCell()
     }
   }
+}
+
+extension MoviesCollectionViewController: UICollectionViewDelegateFlowLayout {
+  
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    
+    let leftInset: CGFloat = 16
+    let rightInset: CGFloat = 16
+    let horizontalSpacing: CGFloat = 16
+    
+    let numberOfColumns: CGFloat = 2
+    
+    let totalHorizontalPadding = leftInset + rightInset + horizontalSpacing
+
+    let availableWidth = collectionView.bounds.width - totalHorizontalPadding
+    
+    let itemWidth = availableWidth / numberOfColumns
+    
+    let itemHeight = itemWidth * 1.7
+    
+    guard itemWidth > 0, itemHeight > 0 else {
+      return .zero
+    }
+    
+    return CGSize(width: itemWidth, height: itemHeight)
+  }
+  
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+    return UIEdgeInsets(top: 16, left: 16, bottom: 0, right: 16)
+  }
+  
 }

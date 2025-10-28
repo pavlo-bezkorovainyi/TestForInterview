@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Giq-XV-cbe">
-                                <rect key="frame" x="0.0" y="172" width="393" height="612"/>
+                                <rect key="frame" x="0.0" y="172" width="393" height="680"/>
                                 <connections>
                                     <segue destination="QTI-BX-9N9" kind="embed" id="smh-3I-dpQ"/>
                                 </connections>
@@ -30,7 +30,7 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Giq-XV-cbe" secondAttribute="trailing" id="7Sl-Nz-CmE"/>
                             <constraint firstItem="Giq-XV-cbe" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="QvW-FK-Ijt"/>
                             <constraint firstItem="Giq-XV-cbe" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="g0e-AZ-R2f"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="Giq-XV-cbe" secondAttribute="bottom" id="tJt-LM-jgB"/>
+                            <constraint firstAttribute="bottom" secondItem="Giq-XV-cbe" secondAttribute="bottom" id="tJt-LM-jgB"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="pwG-2F-PK5"/>
