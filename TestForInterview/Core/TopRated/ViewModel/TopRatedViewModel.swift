@@ -13,6 +13,7 @@ class TopRatedViewModel: ObservableObject {
   //MARK: - Public properties
   
   @Published var movies: [MovieModel] = []
+  @Published var favoriteMovies: [MovieModel] = []
   @Published var isLoading = false
   @Published var rating: String?
   
@@ -22,6 +23,7 @@ class TopRatedViewModel: ObservableObject {
   // MARK: - Private Properties
   
   private let dataService = TopRatedDataService()
+  private let favoritesDataService = FavoritesDataService()
   private var cancellables = Set<AnyCancellable>()
   
   
@@ -51,6 +53,15 @@ class TopRatedViewModel: ObservableObject {
         self.isLoading = isLoading
       }
       .store(in: &cancellables)
+    
+    favoritesDataService.$savedMovies
+      .sink { [weak self] savedMovies in
+        guard let self else { return }
+        let favoriteMovies = savedMovies.compactMap({ MovieModel(from: $0) })
+        self.favoriteMovies = favoriteMovies
+        moviesCollectionVC?.update(movies: self.movies)
+      }
+      .store(in: &cancellables)
   }
   
   private func getRating() -> String {
@@ -67,5 +78,19 @@ class TopRatedViewModel: ObservableObject {
   
   func reloadMovies() {
     dataService.reloadMovies()
+  }
+  
+  func checkIfMovieIsFavorite(_ movie: MovieModel) -> Bool {
+    favoriteMovies.contains(where: { $0.id == movie.id })
+  }
+  
+  func addOrRemoveFromFavorites(movie: MovieModel) {
+    let movies = favoritesDataService.savedMovies.compactMap({ MovieModel(from: $0) })
+    
+    if movies.contains(where: { $0.id == movie.id }) {
+      favoritesDataService.delete(movie: movie)
+    } else {
+      favoritesDataService.add(movie: movie)
+    }
   }
 }

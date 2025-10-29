@@ -10,6 +10,11 @@ import SDWebImage
 
 class MovieCell: UICollectionViewCell {
   
+  // MARK: - Public Properties
+  
+  var movieId: Int?
+  var onStarTap: ((Int) -> Void)?
+  
   // MARK: - Private Properties
   
   private let lblTitle: UILabel = {
@@ -45,12 +50,18 @@ class MovieCell: UICollectionViewCell {
     return imgV
   }()
   
-  private let activityIndicator: UIActivityIndicatorView = {
+  private let aiIndicator: UIActivityIndicatorView = {
     let indicator = UIActivityIndicatorView(style: .large)
     indicator.translatesAutoresizingMaskIntoConstraints = false
     indicator.hidesWhenStopped = true
-    //    indicator.color = .white
     return indicator
+  }()
+  
+  private let btnStar: UIButton = {
+    let btn = UIButton()
+    btn.frame.size = CGSize(width: 20, height: 20)
+    btn.translatesAutoresizingMaskIntoConstraints = false
+    return btn
   }()
   
   
@@ -60,9 +71,10 @@ class MovieCell: UICollectionViewCell {
     super.init(frame: frame)
     
     contentView.addSubview(ivPoster)
-    contentView.addSubview(activityIndicator)
+    contentView.addSubview(aiIndicator)
     contentView.addSubview(lblTitle)
     contentView.addSubview(lblRating)
+    contentView.addSubview(btnStar)
     
     NSLayoutConstraint.activate([
       ivPoster.topAnchor.constraint(equalTo: contentView.topAnchor),
@@ -78,15 +90,25 @@ class MovieCell: UICollectionViewCell {
       lblRating.topAnchor.constraint(equalTo: lblTitle.bottomAnchor, constant: 4),
       lblRating.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 4),
       
-      activityIndicator.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-      activityIndicator.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
+      aiIndicator.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+      aiIndicator.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+      
+      btnStar.topAnchor.constraint(equalTo: ivPoster.topAnchor, constant: 10),
+      btnStar.trailingAnchor.constraint(equalTo: ivPoster.trailingAnchor, constant: -10),
     ])
+    
+    btnStar.addTarget(self, action: #selector(starTapped), for: .touchUpInside)
   }
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
   
+  @objc private func starTapped() {
+    if let movieId {
+      onStarTap?(movieId)
+    }
+  }
   
   // MARK: - Overrides
   
@@ -94,15 +116,19 @@ class MovieCell: UICollectionViewCell {
     super.prepareForReuse()
     ivPoster.image = nil
     ivPoster.sd_cancelCurrentImageLoad()
-    
+
     lblTitle.text = nil
-    activityIndicator.stopAnimating()
+    aiIndicator.stopAnimating()
+    btnStar.setImage(nil, for: .normal)
   }
   
   
   // MARK: - Public methods
   
-  func update(imageUrl: URL?, title: String?, rating: Double?) {
+  func update(movieId: Int, imageUrl: URL?, title: String?, rating: Double?, isFavorite: Bool, onStarTapped: ((Int) -> Void)?) {
+    self.movieId = movieId
+    self.onStarTap = onStarTapped
+    
     if let title {
       self.lblTitle.text = title
     }
@@ -117,14 +143,14 @@ class MovieCell: UICollectionViewCell {
       return
     }
     
-    activityIndicator.startAnimating()
+    aiIndicator.startAnimating()
     
     ivPoster.sd_setImage(
       with: url,
       placeholderImage: nil,
       options: [],
       completed: { [weak self] (image, error, cacheType, imageURL) in
-        self?.activityIndicator.stopAnimating()
+        self?.aiIndicator.stopAnimating()
         
         if let error {
           print(error.localizedDescription)
@@ -132,5 +158,7 @@ class MovieCell: UICollectionViewCell {
         }
       }
     )
+    
+    btnStar.setImage(isFavorite ? UIImage.starFill : UIImage.starEmpty, for: .normal)
   }
 }

@@ -9,22 +9,28 @@ import Foundation
 
 struct MovieModel: Codable {
   let id: Int
-  let originalLanguage, originalTitle, overview: String?
+  let overview: String?
   let popularity: Double?
-  let posterPath, releaseDate, title: String?
-  let voteAverage: Double?
-  let voteCount: Int?
+  let posterPath: String?
+  let releaseDate: String?
+  let title: String?
+  
+  init(from entity: MovieEntity) {
+    self.id = Int(entity.movieId)
+    self.title = entity.title
+    self.overview = entity.overview
+    self.posterPath = entity.posterPath
+    self.releaseDate = entity.releaseDate
+    self.popularity = entity.rating
+  }
   
   enum CodingKeys: String, CodingKey {
     case id
-    case originalLanguage = "original_language"
-    case originalTitle = "original_title"
-    case overview, popularity
+    case overview
+    case popularity
     case posterPath = "poster_path"
     case releaseDate = "release_date"
     case title
-    case voteAverage = "vote_average"
-    case voteCount = "vote_count"
   }
   
   var imgURL: URL? {

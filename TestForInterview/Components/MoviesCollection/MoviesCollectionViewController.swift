@@ -13,6 +13,8 @@ protocol MoviesCollectionViewControllerDelegate: AnyObject {
   func onRefresh()
   func didSelectMovie(_ movie: MovieModel)
   func onDisplayLastCell()
+  func onStarTapped(movie: MovieModel)
+  func checkIfMovieIsFavorite(_ movie: MovieModel) -> Bool
 }
 
 protocol MoviesCollectionViewControllerProtocol: AnyObject {
@@ -69,9 +71,9 @@ class MoviesCollectionViewController: UIViewController {
 
 extension MoviesCollectionViewController: MoviesCollectionViewControllerProtocol {
   func update(movies: [MovieModel]) {
+    refreshControl.endRefreshing()
     self.movies = movies
     collectionView.reloadData()
-    refreshControl.endRefreshing()
   }
 }
 
@@ -96,7 +98,19 @@ extension MoviesCollectionViewController: UICollectionViewDataSource {
     
     let movie = movies[indexPath.item]
     
-    cell.update(imageUrl: movie.imgURL, title: movie.title ?? "No title", rating: movie.popularity)
+    cell.update(
+        movieId: movie.id,
+        imageUrl: movie.imgURL,
+        title: movie.title ?? "No title",
+        rating: movie.popularity,
+        isFavorite: delegate?.checkIfMovieIsFavorite(movie) ?? false,
+        onStarTapped: { [weak self] movieId in
+          guard let self else { return }
+          
+          if let movie = self.movies.first(where: { $0.id == movieId}) {
+            self.delegate?.onStarTapped(movie: movie)
+          }
+    })
     
     return cell
   }
@@ -147,11 +161,14 @@ extension MoviesCollectionViewController: UICollectionViewDelegateFlowLayout {
   }
   
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-    return UIEdgeInsets(top: 16, left: 16, bottom: 0, right: 16)
+    return UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+  }
+  
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+    return 16
   }
   
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
     return 16
   }
-  
 }

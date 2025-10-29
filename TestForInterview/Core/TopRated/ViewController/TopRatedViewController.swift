@@ -84,6 +84,14 @@ class TopRatedViewController: UIViewController {
   // MARK: - MoviesCollectionViewControllerDelegate
 
 extension TopRatedViewController: MoviesCollectionViewControllerDelegate {
+  func checkIfMovieIsFavorite(_ movie: MovieModel) -> Bool {
+    viewModel.checkIfMovieIsFavorite(movie)
+  }
+  
+  func onStarTapped(movie: MovieModel) {
+    viewModel.addOrRemoveFromFavorites(movie: movie)
+  }
+  
   func onRefresh() {
     viewModel.reloadMovies()
   }
