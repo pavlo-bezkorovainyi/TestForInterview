@@ -16,8 +16,7 @@ class MovieCell: UICollectionViewCell {
     let label = UILabel()
     label.textColor = .black
     label.numberOfLines = 1
-    label.font = UIFont.systemFont(ofSize: 14.0, weight: .semibold)
-    
+    label.font = AppFont.font(type: .semibold, size: 14)
     
     label.translatesAutoresizingMaskIntoConstraints = false
     label.minimumScaleFactor = 0.5
@@ -29,8 +28,7 @@ class MovieCell: UICollectionViewCell {
     let label = UILabel()
     label.textColor = .black
     label.numberOfLines = 1
-    label.font = UIFont.systemFont(ofSize: 14.0, weight: .semibold)
-    
+    label.font = AppFont.font(type: .medium, size: 10)
     
     label.translatesAutoresizingMaskIntoConstraints = false
     label.minimumScaleFactor = 0.5

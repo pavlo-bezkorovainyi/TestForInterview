@@ -36,6 +36,12 @@ class TopRatedDataService {
   
   //MARK: - Public methods
   
+  func reloadMovies() {
+    currentPage = 0
+    topRatedMovies.removeAll()
+    fetchMovies()
+  }
+  
   func fetchMovies() {
     guard !isLoading else { return }
     isLoading = true

@@ -6,9 +6,14 @@
 //
 
 import UIKit
+import SwiftUI
 import Combine
 
 class TopRatedViewController: UIViewController {
+  
+  // MARK: - IBOutlets
+  
+  @IBOutlet weak var navBarContainer: UIView!
   
   // MARK: - Private Properties
 
@@ -21,6 +26,7 @@ class TopRatedViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     setupUI()
+    bindRating()
   }
   
   
@@ -34,19 +40,56 @@ class TopRatedViewController: UIViewController {
     }
   }
   
-  // MARK: - UI Setup
+  // MARK: - Private methods
   
   private func setupUI() {
+    let navBar = CustomNavigationBar(
+      title: "Top Rated",
+      rating: viewModel.rating,
+      themeButtonAction: {
+        //TODO: THEME
+      }, searchButtonAction: {
+        //TODO: SEARCH
+      }, favoritesButtonAction: {
+        //TODO: FAVORITES
+      }
+    )
+    
+    let hosting = UIHostingController(rootView: navBar)
+    
+    addChild(hosting)
+    navBarContainer.addSubview(hosting.view)
+    hosting.didMove(toParent: self)
 
+    hosting.view.translatesAutoresizingMaskIntoConstraints = false
+    
+    NSLayoutConstraint.activate([
+        hosting.view.topAnchor.constraint(equalTo: navBarContainer.topAnchor),
+        hosting.view.leadingAnchor.constraint(equalTo: navBarContainer.leadingAnchor),
+        hosting.view.trailingAnchor.constraint(equalTo: navBarContainer.trailingAnchor),
+        hosting.view.bottomAnchor.constraint(equalTo: navBarContainer.bottomAnchor)
+    ])
+  }
+  
+  private func bindRating() {
+    viewModel.$rating
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] _ in
+        self?.setupUI()
+      }
+      .store(in: &cancellables)
   }
 }
-
 
   // MARK: - MoviesCollectionViewControllerDelegate
 
 extension TopRatedViewController: MoviesCollectionViewControllerDelegate {
+  func onRefresh() {
+    viewModel.reloadMovies()
+  }
+  
   func didSelectMovie(_ movie: MovieModel) {
-    // navigation
+    //TODO: GO TO DETAILS
   }
   
   func onDisplayLastCell() {

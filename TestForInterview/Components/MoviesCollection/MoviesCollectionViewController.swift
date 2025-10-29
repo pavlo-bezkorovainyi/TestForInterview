@@ -10,6 +10,7 @@ import UIKit
 fileprivate let reuseIdentifier = "MovieCellId"
 
 protocol MoviesCollectionViewControllerDelegate: AnyObject {
+  func onRefresh()
   func didSelectMovie(_ movie: MovieModel)
   func onDisplayLastCell()
 }
@@ -31,23 +32,38 @@ class MoviesCollectionViewController: UIViewController {
   weak var delegate: MoviesCollectionViewControllerDelegate?
   
   
+  // MARK: - Private Properties
+  
+  private lazy var refreshControl: UIRefreshControl = {
+    let refreshControl = UIRefreshControl()
+    refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
+    return refreshControl
+  }()
+  
   // MARK: - Lifecycle
   
   override func viewDidLoad() {
-    self.collectionView.dataSource = self
-    self.collectionView.delegate = self
-    self.collectionView.register(MovieCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-    if let layout = self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+    collectionView.dataSource = self
+    collectionView.delegate = self
+    collectionView.register(MovieCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+    if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
       layout.estimatedItemSize = .zero
     }
+    collectionView.refreshControl = refreshControl
   }
   
   override func viewWillTransition(to size: CGSize, with coordinator: any UIViewControllerTransitionCoordinator) {
     super.viewWillTransition(to: size, with: coordinator)
     collectionView.collectionViewLayout.invalidateLayout()
   }
+  
+  
+  // MARK: - Private Methods
+  
+  @objc private func handleRefresh() {
+    delegate?.onRefresh()
+  }
 }
-
 
 // MARK: - MoviesCollectionViewControllerProtocol
 
@@ -55,6 +71,7 @@ extension MoviesCollectionViewController: MoviesCollectionViewControllerProtocol
   func update(movies: [MovieModel]) {
     self.movies = movies
     collectionView.reloadData()
+    refreshControl.endRefreshing()
   }
 }
 
@@ -71,17 +88,15 @@ extension MoviesCollectionViewController: UICollectionViewDataSource {
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? MovieCell else {
+    guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? MovieCell,
+          movies.indices.contains(indexPath.item)
+    else {
       return UICollectionViewCell()
     }
     
     let movie = movies[indexPath.item]
     
     cell.update(imageUrl: movie.imgURL, title: movie.title ?? "No title", rating: movie.popularity)
-    
-    //    cell.titleLabel.text = movie.title ?? "No Title"
-    //
-    //    cell.backgroundColor = indexPath.item % 2 == 0 ? .lightGray : .red.withAlphaComponent(0.3)
     
     return cell
   }
@@ -102,6 +117,9 @@ extension MoviesCollectionViewController: UICollectionViewDelegate {
     }
   }
 }
+
+
+// MARK: - UICollectionViewDelegateFlowLayout
 
 extension MoviesCollectionViewController: UICollectionViewDelegateFlowLayout {
   
@@ -130,6 +148,10 @@ extension MoviesCollectionViewController: UICollectionViewDelegateFlowLayout {
   
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
     return UIEdgeInsets(top: 16, left: 16, bottom: 0, right: 16)
+  }
+  
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+    return 16
   }
   
 }

@@ -17,8 +17,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iGM-qe-QO2">
+                                <rect key="frame" x="0.0" y="118" width="393" height="35"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="35" id="keT-HH-0fN"/>
+                                </constraints>
+                            </view>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Giq-XV-cbe">
-                                <rect key="frame" x="0.0" y="172" width="393" height="680"/>
+                                <rect key="frame" x="0.0" y="161" width="393" height="691"/>
                                 <connections>
                                     <segue destination="QTI-BX-9N9" kind="embed" id="smh-3I-dpQ"/>
                                 </connections>
@@ -28,12 +35,20 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Giq-XV-cbe" secondAttribute="trailing" id="7Sl-Nz-CmE"/>
-                            <constraint firstItem="Giq-XV-cbe" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="QvW-FK-Ijt"/>
+                            <constraint firstItem="Giq-XV-cbe" firstAttribute="top" secondItem="iGM-qe-QO2" secondAttribute="bottom" constant="8" id="CsX-5R-Acg"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="iGM-qe-QO2" secondAttribute="trailing" id="Y70-CY-xyd"/>
                             <constraint firstItem="Giq-XV-cbe" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="g0e-AZ-R2f"/>
                             <constraint firstAttribute="bottom" secondItem="Giq-XV-cbe" secondAttribute="bottom" id="tJt-LM-jgB"/>
+                            <constraint firstItem="iGM-qe-QO2" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="u47-NM-UH2"/>
+                            <constraint firstItem="iGM-qe-QO2" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="wgZ-er-ql4"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="pwG-2F-PK5"/>
+                    <navigationItem key="navigationItem" id="pwG-2F-PK5">
+                        <nil key="title"/>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="navBarContainer" destination="iGM-qe-QO2" id="iXK-KS-Wge"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
@@ -42,10 +57,9 @@
         <!--Navigation Controller-->
         <scene sceneID="F33-4a-fPb">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="TmP-HT-iKV" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="TmP-HT-iKV" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="MJj-CW-WXt">
-                        <rect key="frame" x="0.0" y="118" width="393" height="54"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>

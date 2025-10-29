@@ -14,6 +14,7 @@ class TopRatedViewModel: ObservableObject {
   
   @Published var movies: [MovieModel] = []
   @Published var isLoading = false
+  @Published var rating: String?
   
   weak var moviesCollectionVC: MoviesCollectionViewControllerProtocol?
   
@@ -40,6 +41,7 @@ class TopRatedViewModel: ObservableObject {
         guard let self else { return }
         self.movies = movies
         self.moviesCollectionVC?.update(movies: movies)
+        self.rating = self.getRating()
       }
       .store(in: &cancellables)
     
@@ -51,9 +53,19 @@ class TopRatedViewModel: ObservableObject {
       .store(in: &cancellables)
   }
   
+  private func getRating() -> String {
+    let votes = movies.compactMap { $0.popularity }
+    let averageVote = votes.isEmpty ? 0 : votes.reduce(0, +) / Double(votes.count)
+    return String(Int(averageVote))
+  }
+  
   // MARK: - Public Methods
   
   func fetchMovies() {
     dataService.fetchMovies()
+  }
+  
+  func reloadMovies() {
+    dataService.reloadMovies()
   }
 }
