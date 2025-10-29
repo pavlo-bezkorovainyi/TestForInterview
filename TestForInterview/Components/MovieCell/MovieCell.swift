@@ -15,6 +15,7 @@ class MovieCell: UICollectionViewCell {
   var movieId: Int?
   var onStarTap: ((Int) -> Void)?
   
+  
   // MARK: - Private Properties
   
   private let lblTitle: UILabel = {
@@ -44,9 +45,10 @@ class MovieCell: UICollectionViewCell {
   private let ivPoster: UIImageView = {
     let imgV = UIImageView()
     imgV.contentMode = .scaleAspectFill
-    imgV.clipsToBounds = true
+
     imgV.translatesAutoresizingMaskIntoConstraints = false
     imgV.layer.cornerRadius = 15.0
+    imgV.clipsToBounds = true
     return imgV
   }()
   
@@ -84,11 +86,13 @@ class MovieCell: UICollectionViewCell {
       lblTitle.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
       lblTitle.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 0),
       lblTitle.topAnchor.constraint(equalTo: ivPoster.bottomAnchor, constant: 4),
+      lblTitle.heightAnchor.constraint(equalToConstant: 17),
       
       lblRating.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
       lblRating.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 0),
       lblRating.topAnchor.constraint(equalTo: lblTitle.bottomAnchor, constant: 4),
       lblRating.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 4),
+      lblRating.heightAnchor.constraint(equalToConstant: 12),
       
       aiIndicator.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
       aiIndicator.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
@@ -110,6 +114,7 @@ class MovieCell: UICollectionViewCell {
     }
   }
   
+  
   // MARK: - Overrides
   
   override func prepareForReuse() {
@@ -117,7 +122,8 @@ class MovieCell: UICollectionViewCell {
     ivPoster.image = nil
     ivPoster.sd_cancelCurrentImageLoad()
 
-    lblTitle.text = nil
+    lblTitle.text?.removeAll()
+    lblRating.text?.removeAll()
     aiIndicator.stopAnimating()
     btnStar.setImage(nil, for: .normal)
   }
@@ -138,8 +144,10 @@ class MovieCell: UICollectionViewCell {
       self.lblRating.text = "Rating: \(intRating)"
     }
     
+    btnStar.setImage(isFavorite ? UIImage.starFill : UIImage.starEmpty, for: .normal)
+    
     guard let url = imageUrl else {
-      ivPoster.image = UIImage(systemName: "photo") // Заглушка
+      ivPoster.image = UIImage(systemName: "photo")
       return
     }
     
@@ -159,6 +167,6 @@ class MovieCell: UICollectionViewCell {
       }
     )
     
-    btnStar.setImage(isFavorite ? UIImage.starFill : UIImage.starEmpty, for: .normal)
+    
   }
 }

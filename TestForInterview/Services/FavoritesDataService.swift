@@ -38,7 +38,7 @@ class FavoritesDataService {
   
   func add(movie: MovieModel) {
     let entity = MovieEntity(context: container.viewContext)
-    entity.movieId = Int16(movie.id)
+    entity.movieId = Int64(movie.id)
     entity.title = movie.title
     entity.overview = movie.overview
     entity.posterPath = movie.posterPath
@@ -49,7 +49,7 @@ class FavoritesDataService {
   }
   
   func delete(movie: MovieModel) {
-    if let entity = savedMovies.first(where: { $0.movieId == Int16(movie.id)}) {
+    if let entity = savedMovies.first(where: { $0.movieId == Int64(movie.id)}) {
       container.viewContext.delete(entity)
       applyChanges()
     }
