@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 enum AppFontType {
   case regual
@@ -26,5 +27,11 @@ enum AppFontType {
 struct AppFont {
   static func font(type: AppFontType, size: Int) -> UIFont {
     return UIFont(name: type.name, size: CGFloat(size)) ?? UIFont.systemFont(ofSize: CGFloat(size))
+  }
+}
+
+extension View {
+  func setFont(type: AppFontType, size: CGFloat) -> some View {
+    return self.font(.custom(type.name, size: size))
   }
 }

@@ -20,7 +20,7 @@ class MovieCell: UICollectionViewCell {
   
   private let lblTitle: UILabel = {
     let label = UILabel()
-    label.textColor = .black
+    label.textColor = UIColor.text
     label.numberOfLines = 1
     label.font = AppFont.font(type: .semibold, size: 14)
     
@@ -32,7 +32,7 @@ class MovieCell: UICollectionViewCell {
   
   private let lblRating: UILabel = {
     let label = UILabel()
-    label.textColor = .black
+    label.textColor = UIColor.text
     label.numberOfLines = 1
     label.font = AppFont.font(type: .medium, size: 10)
     

@@ -23,7 +23,7 @@ class TopRatedViewModel: ObservableObject {
   // MARK: - Private Properties
   
   private let dataService = TopRatedDataService()
-  private let favoritesDataService = FavoritesDataService()
+  private let favoritesDataService = FavoritesDataService.shared
   private var cancellables = Set<AnyCancellable>()
   
   

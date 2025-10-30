@@ -97,7 +97,10 @@ extension TopRatedViewController: MoviesCollectionViewControllerDelegate {
   }
   
   func didSelectMovie(_ movie: MovieModel) {
-    //TODO: GO TO DETAILS
+    let detailView = UIHostingController(rootView: MovieDetailView(movie: movie, movieId: nil, onBackButtonPressed: {
+      self.navigationController?.popViewController(animated: true)
+    }))
+    navigationController?.pushViewController(detailView, animated: true)
   }
   
   func onDisplayLastCell() {

@@ -10,6 +10,8 @@ import CoreData
 
 class FavoritesDataService {
   
+  static let shared = FavoritesDataService()
+  
   // MARK: - Public Propeties
   
   @Published var savedMovies: [MovieEntity] = []
@@ -24,7 +26,7 @@ class FavoritesDataService {
   
   //MARK: - Initialization
   
-  init() {
+  private init() {
     container = NSPersistentContainer(name: containerName)
     container.loadPersistentStores { (_, error) in
       if let error {

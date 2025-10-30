@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24128" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="TmP-HT-iKV">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24127" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="TmP-HT-iKV">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -25,7 +25,7 @@
                                 </constraints>
                             </view>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Giq-XV-cbe">
-                                <rect key="frame" x="0.0" y="161" width="393" height="691"/>
+                                <rect key="frame" x="0.0" y="177" width="393" height="675"/>
                                 <connections>
                                     <segue destination="QTI-BX-9N9" kind="embed" id="smh-3I-dpQ"/>
                                 </connections>
@@ -35,7 +35,7 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Giq-XV-cbe" secondAttribute="trailing" id="7Sl-Nz-CmE"/>
-                            <constraint firstItem="Giq-XV-cbe" firstAttribute="top" secondItem="iGM-qe-QO2" secondAttribute="bottom" constant="8" id="CsX-5R-Acg"/>
+                            <constraint firstItem="Giq-XV-cbe" firstAttribute="top" secondItem="iGM-qe-QO2" secondAttribute="bottom" constant="24" id="CsX-5R-Acg"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="iGM-qe-QO2" secondAttribute="trailing" id="Y70-CY-xyd"/>
                             <constraint firstItem="Giq-XV-cbe" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="g0e-AZ-R2f"/>
                             <constraint firstAttribute="bottom" secondItem="Giq-XV-cbe" secondAttribute="bottom" id="tJt-LM-jgB"/>
