@@ -49,7 +49,8 @@ class TopRatedViewController: UIViewController {
       themeButtonAction: {
         //TODO: THEME
       }, searchButtonAction: {
-        //TODO: SEARCH
+        let searchVC = SearchViewController.createFromStoryboard()
+        self.navigationController?.pushViewController(searchVC, animated: true)
       }, favoritesButtonAction: {
         //TODO: FAVORITES
       }
